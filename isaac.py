@@ -5,6 +5,7 @@ import numpy as np
 import argparse
 import re
 import random
+from jax_api import jax_complete
 
 parser = argparse.ArgumentParser(description='CLI for Isaac')
 
@@ -113,6 +114,11 @@ async def on_message(message):
                 await message.channel.send(r)
         elif message.content.lower() == '!ping':
             response = 'pong'
+            await message.channel.send(response)
+        elif message.content.lower().startswith('!complete'):
+            text = message.content.lower().strip('!complete').strip()
+            response = jax_complete(text)
+            message.channel.send(response)
             await message.channel.send(response)
         elif message.content.lower() == '!help':
             response = 'Commands are "!scp euclid" for Euclid-class SCP object or "!scp keter" for Keter class.' \
