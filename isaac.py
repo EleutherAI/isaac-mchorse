@@ -119,10 +119,11 @@ async def on_message(message):
         elif message.content.lower() == '!ping':
             response = 'pong'
             await message.channel.send(response)
-        elif message.content.lower().startswith('!complete'):
-            text = message.content.lower().strip('!complete').strip()
+        elif message.content.startswith('!complete'):
+            print(f'message content: {message.content}')
+            text = message.content.strip('!complete').strip(' ')
             print(f'Sending to jax api: \n{text}')
-            response = jax_complete(text)
+            response = jax_complete(text).split("<|endoftext|>")[0]
             print(f'Received response: \n{response}')
             for s in split_by_n(response, 2000):
                 await message.channel.send(s)
