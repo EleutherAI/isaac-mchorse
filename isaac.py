@@ -16,6 +16,10 @@ TOKEN = args.token
 GUILD = 'EleutherAI'
 client = discord.Client()
 
+def remove_prefix(text, prefix):
+    if text.startswith(prefix):
+        return text[len(prefix):]
+    return text
 
 def split_by_n(seq, n):
     '''A generator to divide a sequence into chunks of n units.'''
@@ -121,7 +125,7 @@ async def on_message(message):
             await message.channel.send(response)
         elif message.content.startswith('!complete'):
             print(f'message content: {message.content}')
-            text = message.content.strip('!complete').strip(' ')
+            text = remove_prefix(message.content, "!complete").strip()
             print(f'Sending to jax api: \n{text}')
             response = jax_complete(text).split("<|endoftext|>")[0]
             print(f'Received response: \n{response}')
