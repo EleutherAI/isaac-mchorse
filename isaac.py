@@ -17,6 +17,13 @@ GUILD = 'EleutherAI'
 client = discord.Client()
 
 
+def split_by_n(seq, n):
+    '''A generator to divide a sequence into chunks of n units.'''
+    while seq:
+        yield seq[:n]
+        seq = seq[n:]
+
+
 @client.event
 async def on_ready():
     guild = discord.utils.find(lambda g: g.name == GUILD, client.guilds)
@@ -71,10 +78,7 @@ def get_random_scp(type='euclid'):
     choice = scps[n]
     with open(choice, 'r') as myfile:
         data = myfile.read()
-        if len(data) > 2000:
-            return [data[:2000], data[2000:]]
-        else:
-            return [data]
+        return list(split_by_n(data, 2000))
 
 
 @client.event
@@ -117,9 +121,11 @@ async def on_message(message):
             await message.channel.send(response)
         elif message.content.lower().startswith('!complete'):
             text = message.content.lower().strip('!complete').strip()
+            print(f'Sending to jax api: \n{text}')
             response = jax_complete(text)
-            message.channel.send(response)
-            await message.channel.send(response)
+            print(f'Received response: \n{response}')
+            for s in split_by_n(response, 2000):
+                await message.channel.send(s)
         elif message.content.lower() == '!help':
             response = 'Commands are "!scp euclid" for Euclid-class SCP object or "!scp keter" for Keter class.' \
                        ' Use with caution.'
