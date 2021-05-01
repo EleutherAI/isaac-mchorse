@@ -67,7 +67,7 @@ async def on_message(message):
             if length is not None:
                 response = response[:length]
             print(f'Received response: \n{response}')
-            output = f"Input:\n```{text}```\nCompletion:\n```{response}```"
+            output = f"Input:\n```\n{text}```\nCompletion:\n```\n{response}```"
             for s in split_by_n(output, 2000):
                 await message.channel.send(s)
         elif message.content.lower() == '!help':
