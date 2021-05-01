@@ -7,8 +7,8 @@ def get_param(text, param):
         text = remove_prefix(text, param).strip()
         t = text.split(' ')
         text = remove_prefix(text, t[0]).strip()
-        temp = float(t[0])
-        return temp, text
+        param = float(t[0])
+        return param, text
     except Exception as e:
         print(e)
         return None, text
@@ -25,6 +25,8 @@ def get_params(text):
             top_p, text = get_param(text, "!top-p")
         if text.startswith("!length"):
             length, text = get_param(text, "!length")
+            if length is not None:
+                length = int(length)
     return top_p or default_top_p, temp or default_temp, length or default_length, text
 
 
