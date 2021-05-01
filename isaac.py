@@ -61,9 +61,11 @@ async def on_message(message):
         elif message.content.startswith('!complete'):
             print(f'message content: {message.content}')
             text = remove_prefix(message.content, "!complete").strip()
-            top_p, temp, text = get_params(text)
+            top_p, temp, length, text = get_params(text)
             print(f'Sending to jax api: \n{text}')
             response = jax_complete(text, top_p=top_p, temp=temp).split("<|endoftext|>")[0]
+            if length is not None:
+                response = response[:length]
             print(f'Received response: \n{response}')
             for s in split_by_n(response, 2000):
                 await message.channel.send(s)

@@ -17,12 +17,15 @@ def get_param(text, param):
 def get_params(text):
     default_top_p = top_p = 0.9
     default_temp = temp = 0.75
-    for i in range(2):
+    default_length = length = None
+    for i in range(3):
         if text.startswith("!temp"):
             temp, text = get_param(text, "!temp")
         if text.startswith("!top-p"):
             top_p, text = get_param(text, "!top-p")
-    return top_p or default_top_p, temp or default_temp, text
+        if text.startswith("!length"):
+            length, text = get_param(text, "!length")
+    return top_p or default_top_p, temp or default_temp, length or default_length, text
 
 
 def remove_prefix(text, prefix):
