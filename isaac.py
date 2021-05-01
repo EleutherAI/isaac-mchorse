@@ -67,7 +67,15 @@ async def on_message(message):
             if length is not None:
                 response = response[:length]
             print(f'Received response: \n{response}')
-            for s in split_by_n(response, 2000):
+            output = f"""Input: 
+            ```
+            {text}
+            ```
+            Completion:
+            ```
+            {response}
+            ```"""
+            for s in split_by_n(output, 2000):
                 await message.channel.send(s)
         elif message.content.lower() == '!help':
             response = 'Commands are "!scp euclid" for Euclid-class SCP object or "!scp keter" for Keter class.' \
