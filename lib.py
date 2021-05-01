@@ -17,7 +17,7 @@ def get_param(text, param):
 def get_params(text):
     default_top_p = top_p = 0.9
     default_temp = temp = 0.75
-    default_length = length = None
+    default_length = length = 1500
     for i in range(3):
         if text.startswith("!temp"):
             temp, text = get_param(text, "!temp")
