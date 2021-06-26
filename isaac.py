@@ -43,6 +43,17 @@ async def on_message(message):
     if 'bikeshedding' in message.content.lower():
         await message.channel.send(get_random_bikeshedding_msg())
 
+    # by guac
+    if message.content.startswith('!goose'):
+        idx = random.randint(1, 1000)
+        file = f"goose-mugshot-{str(idx).zfill(4)}.jpg"
+        url = f"https://raw.githubusercontent.com/steggie3/goose-dataset/master/images/{file}"
+        r = requests.get(url)
+        with open("goose.jpg", "wb") as f:
+          f.write(r.content)
+        picture = discord.File("goose.jpg")
+        await message.channel.send(file=picture)
+
     if str(message.channel) != 'the-faraday-cage':
         return
     else:
